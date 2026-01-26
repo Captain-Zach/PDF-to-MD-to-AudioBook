@@ -1,0 +1,86 @@
+ {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "title": "PdfToAudioPipelineOutput",
+   "type": "object",
+   "required": ["document", "chapters", "images", "audio"],
+   "properties": {
+     "document": {
+       "type": "object",
+       "required": ["title", "source_file"],
+       "properties": {
+         "title": { "type": "string" },
+         "author": { "type": "string" },
+         "language": { "type": "string" },
+         "page_count": { "type": "integer", "minimum": 1 },
+         "source_file": { "type": "string" }
+       },
+       "additionalProperties": false
+     },
+     "chapters": {
+       "type": "array",
+       "items": {
+         "type": "object",
+         "required": ["id", "order", "title", "md"],
+         "properties": {
+           "id": { "type": "string" },
+           "order": { "type": "integer", "minimum": 0 },
+           "title": { "type": "string" },
+           "md": { "type": "string" },
+           "text": { "type": "string" }
+         },
+         "additionalProperties": false
+       }
+     },
+     "images": {
+       "type": "array",
+       "items": {
+         "type": "object",
+         "required": ["id", "file_name", "page"],
+         "properties": {
+           "id": { "type": "string" },
+           "file_name": { "type": "string" },
+           "page": { "type": "integer", "minimum": 1 },
+           "caption": { "type": "string" },
+           "alt_text": { "type": "string" }
+         },
+         "additionalProperties": false
+       }
+     },
+     "audio": {
+       "type": "object",
+       "required": ["chapters"],
+       "properties": {
+         "total_duration_ms": { "type": "integer", "minimum": 0 },
+         "chapters": {
+           "type": "array",
+           "items": {
+             "type": "object",
+             "required": ["id", "file_name", "duration_ms", "chunks"],
+             "properties": {
+               "id": { "type": "string" },
+               "file_name": { "type": "string" },
+               "duration_ms": { "type": "integer", "minimum": 0 },
+               "chunks": {
+                 "type": "array",
+                 "items": {
+                   "type": "object",
+                   "required": ["chunk_id", "start_ms", "end_ms", "text"],
+                   "properties": {
+                     "chunk_id": { "type": "string" },
+                     "start_ms": { "type": "integer", "minimum": 0 },
+                     "end_ms": { "type": "integer", "minimum": 0 },
+                     "text": { "type": "string" }
+                   },
+                   "additionalProperties": false
+                 }
+               }
+             },
+             "additionalProperties": false
+           }
+         }
+       },
+       "additionalProperties": false
+     }
+   },
+   "additionalProperties": false
+ }
