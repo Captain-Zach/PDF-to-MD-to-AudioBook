@@ -9,6 +9,7 @@
  - Data contracts (MD, images, audio manifests)
  - UX flow for single-button playback
  - Risk register and tech decisions log
+- Confirm native Android, offline TTS, and local-only processing constraints
  
  **Primary outputs**
  - docs/prd.md
@@ -21,18 +22,21 @@
  - CI, lint, and test harness
  - Auto-deploy pipeline to Android device
  - Logging, telemetry, and feedback pipeline
+- Enforce local-only file handling for PDFs and EPUBs
  
  **Primary outputs**
  - docs/devops.md
  - CI pipeline config
  - Mobile build pipeline
  
- ## Milestone 2: PDF to Markdown + Images
+## Milestone 2: PDF/EPUB to Markdown + Images
  **Goal:** reliable extraction and normalization.
  - PDF text extraction
- - OCR path for scanned pages
+- EPUB extraction to clean Markdown (MD-only)
+- OCR path for scanned pages (handwriting out of scope)
  - Markdown normalization and chapter segmentation
  - Image extraction and manifest generation
+- Preserve code blocks, tables, and headings for technical docs
  
  **Primary outputs**
  - content.md
@@ -41,9 +45,10 @@
  
  ## Milestone 3: Markdown to Audio + Alignment
  **Goal:** audio generation with chunk timestamps.
- - TTS adapter layer
+- Offline TTS adapter layer
  - Chunking and timestamp correlation
  - Resume/recovery markers
+- Model packaging and performance tuning for device
  
  **Primary outputs**
  - audio_manifest.json
@@ -51,7 +56,7 @@
  
  ## Milestone 4: Mobile Playback App
  **Goal:** listener-first experience with one-button control.
- - Playback UI and single-button flow
+- Native Android playback UI and single-button flow
  - Chunk markers and feedback capture
  - Offline cache and resume
  
@@ -61,7 +66,7 @@
  
  ## Milestone 5: Agent Test Harness
  **Goal:** allow automated agents to test end-to-end.
- - Agent-friendly API or CLI for conversions
+- Agent-friendly API or CLI for conversions (local file paths)
  - Synthetic test packs and regression checks
  - Device performance benchmarks
  

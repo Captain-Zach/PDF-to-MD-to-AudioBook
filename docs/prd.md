@@ -6,16 +6,19 @@
  images/captions, and aligned audio chunks so listeners can resume, navigate,
  and search reliably.
  
- ## Goals
- - Convert a PDF into clean, structured Markdown with image manifests.
+## Goals
+- Convert PDFs into clean, structured Markdown with image manifests.
+- Convert EPUBs into clean Markdown (MD-only for EPUB in MVP).
  - Generate audiobook audio with chunk/timestamp alignment.
  - Provide a mobile playback app with a simple, single-button control flow.
  - Support agent-driven testing and automated QA workflows.
  - Provide a way to request and track agent runs.
  - Provide DevOps basics: auto-deploy to device, telemetry, and feedback capture.
  
- ## Non-goals (initial release)
- - Full editorial correction of OCR errors.
+## Non-goals (initial release)
+- Handwriting recognition.
+- Cloud-based PDF/EPUB processing (local-only for now).
+- Full editorial correction of OCR errors.
  - Full desktop app or web reader.
  - Multi-user accounts and social features.
  
@@ -24,11 +27,13 @@
  - Builders who want a repeatable PDF to audio pipeline.
  - Agents and QA systems that need machine-readable outputs for testing.
  
- ## Assumptions
- - The MVP will be Android-first (Moto Stylus G 2024 target device).
- - PDFs may include images and scanned pages.
- - LLM usage is allowed for transformation and cleanup.
- - TTS may be cloud-based initially, with an offline path later.
+## Assumptions
+- The MVP will be native Android-first (Moto Stylus G 2024 target device).
+- PDFs and EPUBs are processed locally on device or local machine.
+- PDFs may include images and scanned pages; handwriting is out of scope.
+- LLM usage is allowed for transformation and cleanup when running locally.
+- TTS must be offline/on-device for MVP.
+- Target content is primarily technical documents and books.
  
  ## Success metrics
  - PDF to audio conversion completes without manual intervention for 80% of
@@ -36,9 +41,11 @@
  - 90% of chapter start points align with correct audio timestamps.
  - Time-to-first-audio under 2 minutes for a 30-page PDF on baseline hardware.
  - App playback resumes accurately within 2 seconds of the prior position.
+- EPUB to clean Markdown conversion completes for 90% of tested EPUBs.
  
  ## MVP scope
  - PDF extraction to Markdown with chapter segmentation.
+- EPUB extraction to clean Markdown (no audio for EPUB in MVP).
  - Image extraction with simple captions.
  - Audio generation with chunk markers and timestamps.
  - Android playback app with single-button control.
@@ -47,13 +54,12 @@
  - Agent job API for scheduling and monitoring runs.
  
  ## Future scope
- - Offline TTS and offline OCR for privacy-first usage.
  - Advanced image description via vision models.
  - RAG-ready embedding exports and search index.
  - Multi-language support and per-voice personalization.
  
  ## Risks
- - OCR quality variance on scanned PDFs and handwriting.
- - Cost and latency for cloud TTS at scale.
+- OCR quality variance on scanned PDFs.
+- Offline TTS model quality and device performance.
  - Inconsistent heading detection leading to poor chapterization.
  - Device resource constraints for on-device models.
