@@ -11,7 +11,7 @@
  - Use internal testing (Firebase App Distribution or Play Internal Testing).
  - CI builds on merge to main or a release tag.
  - Notify via email/Slack with version + changelog.
-- Include offline TTS model assets in build or as a user-approved download.
+- Validate Android system TTS offline voice availability during QA.
  
  ## Logging and telemetry
  - Structured logs with correlation IDs per conversion job.

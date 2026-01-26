@@ -45,7 +45,7 @@
  
  ## Milestone 3: Markdown to Audio + Alignment
  **Goal:** audio generation with chunk timestamps.
-- Offline TTS adapter layer
+- Offline TTS adapter layer (Android system TTS for MVP)
  - Chunking and timestamp correlation
  - Resume/recovery markers
 - Model packaging and performance tuning for device

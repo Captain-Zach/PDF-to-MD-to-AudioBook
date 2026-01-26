@@ -13,6 +13,7 @@ chunk timestamps. This repo is in early setup and focuses on:
 Constraints:
 - PDFs and EPUBs are processed locally only (no upload).
 - Handwriting recognition is out of scope.
+- Native Android package: `com.deeperdive.pdf2audio`
  
 ## Docs
 - [Product requirements](docs/prd.md)

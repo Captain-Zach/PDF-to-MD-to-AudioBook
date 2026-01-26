@@ -32,7 +32,7 @@
 - PDFs and EPUBs are processed locally on device or local machine.
 - PDFs may include images and scanned pages; handwriting is out of scope.
 - LLM usage is allowed for transformation and cleanup when running locally.
-- TTS must be offline/on-device for MVP.
+- TTS must be offline/on-device for MVP using Android system TTS.
 - Target content is primarily technical documents and books.
  
  ## Success metrics
@@ -47,7 +47,7 @@
  - PDF extraction to Markdown with chapter segmentation.
 - EPUB extraction to clean Markdown (no audio for EPUB in MVP).
  - Image extraction with simple captions.
- - Audio generation with chunk markers and timestamps.
+- Audio generation with chunk markers and timestamps using Android system TTS.
  - Android playback app with single-button control.
  - Telemetry, logging, and in-app feedback.
  - Agent-accessible test harness (API or CLI).
