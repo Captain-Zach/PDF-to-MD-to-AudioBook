@@ -2,6 +2,7 @@
     package="com.deeperdive.pdf2audio">
 
     <application
+        android:name=".Pdf2AudioApplication"
         android:allowBackup="true"
         android:icon="@android:drawable/ic_menu_view"
         android:label="@string/app_name"

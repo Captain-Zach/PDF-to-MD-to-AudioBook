@@ -3,6 +3,7 @@
     <string name="select_document">Select PDF/EPUB</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
+    <string name="converting">Converting...</string>
     <string name="status_idle">Status: Idle</string>
     <string name="no_file_selected">No document selected</string>
 </resources>
