@@ -4,6 +4,9 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="converting">Converting...</string>
+    <string name="preview_markdown">Preview Markdown</string>
+    <string name="preview_title">Markdown Preview</string>
+    <string name="preview_empty">No markdown available.</string>
     <string name="status_idle">Status: Idle</string>
     <string name="no_file_selected">No document selected</string>
 </resources>

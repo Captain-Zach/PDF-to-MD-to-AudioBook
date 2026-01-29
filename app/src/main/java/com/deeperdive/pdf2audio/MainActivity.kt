@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +37,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var fileView: TextView
     private lateinit var primaryButton: Button
     private lateinit var pickButton: Button
+    private lateinit var previewButton: Button
+    private lateinit var progressBar: ProgressBar
 
     private val openDocumentLauncher = registerForActivityResult(
         ActivityResultContracts.OpenDocument()
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         isPlaying = false
         primaryButton.text = getString(R.string.play)
         primaryButton.isEnabled = true
+        previewButton.isEnabled = false
         fileView.text = queryDisplayName(uri) ?: uri.toString()
         statusView.text = "Status: Ready"
     }
@@ -72,6 +77,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         fileView = findViewById(R.id.fileView)
         primaryButton = findViewById(R.id.primaryButton)
         pickButton = findViewById(R.id.pickButton)
+        previewButton = findViewById(R.id.previewButton)
+        progressBar = findViewById(R.id.progressBar)
 
         tts = TextToSpeech(this, this)
         tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
@@ -112,6 +119,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 arrayOf("application/pdf", "application/epub+zip")
             )
         }
+        previewButton.setOnClickListener { openPreview() }
     }
 
     override fun onInit(status: Int) {
@@ -172,6 +180,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         conversionWorkId = request.id
         isConverting = true
         primaryButton.isEnabled = false
+        previewButton.isEnabled = false
+        progressBar.visibility = View.VISIBLE
         primaryButton.text = getString(R.string.converting)
         statusView.text = "Status: Converting"
         WorkManager.getInstance(this).enqueue(request)
@@ -188,6 +198,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             WorkInfo.State.SUCCEEDED -> {
                 isConverting = false
                 primaryButton.isEnabled = true
+                previewButton.isEnabled = true
+                progressBar.visibility = View.GONE
                 primaryButton.text = getString(R.string.play)
                 markdownPath = info.outputData.getString(ConversionWorker.KEY_OUTPUT_PATH)
                 loadMarkdownAndPrepare()
@@ -195,22 +207,29 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             WorkInfo.State.FAILED -> {
                 isConverting = false
                 primaryButton.isEnabled = true
+                previewButton.isEnabled = false
+                progressBar.visibility = View.GONE
                 primaryButton.text = getString(R.string.play)
                 statusView.text = "Status: Conversion failed"
             }
             WorkInfo.State.CANCELLED -> {
                 isConverting = false
                 primaryButton.isEnabled = true
+                previewButton.isEnabled = false
+                progressBar.visibility = View.GONE
                 primaryButton.text = getString(R.string.play)
                 statusView.text = "Status: Conversion cancelled"
             }
             WorkInfo.State.RUNNING -> {
+                progressBar.visibility = View.VISIBLE
                 statusView.text = "Status: Converting"
             }
             WorkInfo.State.ENQUEUED -> {
+                progressBar.visibility = View.VISIBLE
                 statusView.text = "Status: Queued"
             }
             WorkInfo.State.BLOCKED -> {
+                progressBar.visibility = View.VISIBLE
                 statusView.text = "Status: Blocked"
             }
         }
@@ -227,8 +246,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             } else {
                 "Status: No text to read"
             }
+            previewButton.isEnabled = true
         } catch (error: Exception) {
             statusView.text = "Status: Failed to load markdown"
+            previewButton.isEnabled = false
         }
     }
 
@@ -285,6 +306,20 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         conversionWorkId?.let { WorkManager.getInstance(this).cancelWorkById(it) }
         conversionWorkId = null
         isConverting = false
+        progressBar.visibility = View.GONE
+    }
+
+    private fun openPreview() {
+        val path = markdownPath
+        if (path.isNullOrBlank()) {
+            statusView.text = "Status: No markdown to preview"
+            return
+        }
+        val title = queryDisplayName(selectedUri ?: return)
+        val intent = Intent(this, MarkdownPreviewActivity::class.java)
+        intent.putExtra(MarkdownPreviewActivity.EXTRA_PATH, path)
+        intent.putExtra(MarkdownPreviewActivity.EXTRA_TITLE, title)
+        startActivity(intent)
     }
 
     private fun queryDisplayName(uri: Uri): String? {
